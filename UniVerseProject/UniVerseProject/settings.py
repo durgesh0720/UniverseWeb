@@ -1,25 +1,35 @@
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-SECRET_KEY = 'django-insecure-=pm2)mz@_b--(t+fg-3a)zgf4_i@!fnts%5pun+r)5&=!b%yn5'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-DEBUG = True
+load_dotenv()
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:9000', 'http://127.0.0.1:9000']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'your-production-domain.com']
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:9000',
+    'http://127.0.0.1:9000',
+    'https://your-production-domain.com'
+]
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
+   
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -71,8 +81,12 @@ ASGI_APPLICATION = 'UniVerseProject.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DJANGO_DB_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.getenv('DJANGO_DB_NAME', BASE_DIR / 'db.sqlite3'),
+        'USER': os.getenv('DJANGO_DB_USER', ''),
+        'PASSWORD': os.getenv('DJANGO_DB_PASSWORD', ''),
+        'HOST': os.getenv('DJANGO_DB_HOST', ''),
+        'PORT': os.getenv('DJANGO_DB_PORT', ''),
     }
 }
 
