@@ -11,7 +11,7 @@ SECRET_KEY = 'django-insecure-=pm2)mz@_b--(t+fg-3a)zgf4_i@!fnts%5pun+r)5&=!b%yn5
 
 
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh']
 CSRF_TRUSTED_ORIGINS = ['https://universe-web-nine.vercel.app/']
