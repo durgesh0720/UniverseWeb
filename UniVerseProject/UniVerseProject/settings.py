@@ -8,14 +8,14 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 SECRET_KEY = 'django-insecure-=pm2)mz@_b--(t+fg-3a)zgf4_i@!fnts%5pun+r)5&=!b%yn5'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
+
 
 
 DEBUG = True
 
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh']
+CSRF_TRUSTED_ORIGINS = ['https://universe-web-nine.vercel.app/']
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:9000', 'http://127.0.0.1:9000']
 
 # Application definition
 
@@ -72,10 +72,15 @@ ASGI_APPLICATION = 'UniVerseProject.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
+
 
 
 # Password validation
@@ -110,9 +115,9 @@ USE_TZ = True
 
 
 
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR, 'static']
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
 
 
 
@@ -122,7 +127,8 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [os.environ.get('REDIS_URL')],
         },
     },
 }
+
